@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Notes App</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #243b55;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px #00000012;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        .note {
+            border-left: 4px solid #2563eb;
+        }
+
+        .note h3 {
+            margin-top: 0;
+            color: #243b55;
+        }
+
+        .date {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📝 Quick Notes App</h1>
+
+    <div class="card">
+        <h2>Create a New Note</h2>
+
+        <form action="/add" method="POST">
+
+            <input
+                type="text"
+                name="title"
+                placeholder="Enter note title"
+                required
+            >
+
+            <textarea
+                name="content"
+                placeholder="Write your note here..."
+                required
+            ></textarea>
+
+            <button type="submit">Save Note</button>
+
+        </form>
+    </div>
+
+    <h2>My Saved Notes</h2>
+
+    {% if notes %}
+
+        {% for note in notes %}
+
+            <div class="card note">
+
+                <h3>{{ note["title"] }}</h3>
+
+                <p>{{ note["content"] }}</p>
+
+                <p class="date">
+                    Created: {{ note["created_at"] }}
+                </p>
+
+                <form
+                    action="/delete/{{ note['id'] }}"
+                    method="POST"
+                >
+                    <button class="delete-btn" type="submit">
+                        Delete Note
+                    </button>
+                </form>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="card empty">
+            No notes yet. Create your first note!
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
